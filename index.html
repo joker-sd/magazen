@@ -3,132 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر Telegram</title>
+    <title>متجر إلكتروني</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Tajawal', Arial, sans-serif; 
-            text-align: center; 
-            padding: 20px; 
-            background-color: #f0f2f5;
-            color: #333;
+        body {
+            font-family: 'Tajawal', sans-serif;
             margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
-        h1 {
-            color: #0088cc;
-            margin-bottom: 30px;
+
+        header {
+            background-color: #0088cc;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 20px;
         }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .products, .cart-page, .account-page {
+            display: none;
+        }
+
+        .products.active, .cart-page.active, .account-page.active {
+            display: block;
+        }
+
         .products {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 0 20px;
+            gap: 15px;
         }
-        .product { 
-            background-color: white;
+
+        .product {
+            background-color: #fff;
+            padding: 15px;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        .product:hover {
-            transform: translateY(-5px);
-        }
+
         .product img {
-            width: 150px;
+            width: 100%;
+            max-width: 150px;
             height: 150px;
             object-fit: cover;
             border-radius: 10px;
-            margin-bottom: 15px;
         }
+
         .product h2 {
             font-size: 18px;
             margin: 10px 0;
         }
+
         .price {
             font-weight: bold;
             color: #0088cc;
-            margin-bottom: 10px;
         }
-        button { 
-            padding: 10px 20px; 
-            background-color: #0088cc; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #006699;
-        }
-        #cart {
-            position: fixed;
-            top: 20px;
-            left: 20px;
+
+        button {
             background-color: #0088cc;
             color: white;
-            padding: 10px;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
             cursor: pointer;
-            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005f99;
+        }
+
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        footer button {
+            flex: 1;
+            padding: 10px 0;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        footer button.active {
+            color: #0088cc;
+        }
+
+        .cart-page ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-page li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-page li button {
+            background-color: red;
+        }
+
+        #checkoutForm input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div id="cart">0</div>
-    <h1>مرحبا بك في المتجر</h1>
-    <div id="products" class="products">
-        <!-- سيتم إنشاء المنتجات هنا ديناميكيًا -->
+    <header>مرحباً بك في المتجر</header>
+
+    <div class="main-content">
+        <!-- Products Section -->
+        <div id="products" class="products active"></div>
+
+        <!-- Cart Section -->
+        <div id="cartPage" class="cart-page">
+            <h2>سلة المشتريات</h2>
+            <ul id="cartItems"></ul>
+            <form id="checkoutForm">
+                <h3>إتمام الطلب</h3>
+                <input type="text" id="customerName" placeholder="اسم العميل" required>
+                <input type="text" id="customerAddress" placeholder="العنوان" required>
+                <input type="tel" id="customerPhone" placeholder="رقم الهاتف" required>
+                <button type="submit">إرسال الطلب</button>
+            </form>
+        </div>
+
+        <!-- Account Section -->
+        <div id="accountPage" class="account-page">
+            <h2>إنشاء حساب</h2>
+            <form id="accountForm">
+                <input type="text" id="registerName" placeholder="اسمك" required>
+                <input type="text" id="registerAddress" placeholder="عنوانك" required>
+                <input type="tel" id="registerPhone" placeholder="رقم هاتفك" required>
+                <button type="submit">حفظ البيانات</button>
+            </form>
+        </div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <footer>
+        <button id="homeTab" class="active" onclick="switchTab('home')">الرئيسية</button>
+        <button id="cartTab" onclick="switchTab('cart')">السلة</button>
+        <button id="accountTab" onclick="switchTab('account')">الحساب</button>
+    </footer>
+
     <script>
-        // مصفوفة المنتجات
         const products = [
-            { name: 'حليب', price: 50, image: 'https://avatars.mds.yandex.net/i?id=8176fa44f0e16af14246289848884abb_l-9099806-images-thumbs&ref=rim&n=13&w=1026&h=1026' },
-            { name: 'عصير', price: 30, image: 'https://avatars.mds.yandex.net/i?id=88be488f7d174a58b051b0d04b839ebc_l-5166633-images-thumbs&ref=rim&n=13&w=462&h=760' },
-            { name: 'شوكولاتة', price: 70, image: 'https://avatars.mds.yandex.net/i?id=762724787879a415d8e210b8ffde1cde_l-5222573-images-thumbs&ref=rim&n=13&w=1140&h=1140' },
-            { name: 'خبز', price: 20, image: 'https://avatars.mds.yandex.net/i?id=21972448c62907923ee1c322e7ae5026_l-6332308-images-thumbs&n=13' },
-            { name: 'جبن', price: 60, image: 'https://avatars.mds.yandex.net/i?id=572bd2c808960446df9719ba70ddabb7_l-10869960-images-thumbs&n=13' }
+            { name: 'حليب', price: 50, image: 'https://avatars.mds.yandex.net/i?id=8176fa44f0e16af14246289848884abb_l-9099806-images-thumbs&ref=rim&n=13&w=1026&h=1026', alt: 'حليب' },
+            { name: 'عصير', price: 30, image: 'https://avatars.mds.yandex.net/i?id=88be488f7d174a58b051b0d04b839ebc_l-5166633-images-thumbs&ref=rim&n=13&w=462&h=760', alt: 'عصير' },
+            { name: 'شوكولاتة', price: 70, image: 'https://avatars.mds.yandex.net/i?id=762724787879a415d8e210b8ffde1cde_l-5222573-images-thumbs&ref=rim&n=13&w=1140&h=1140', alt: 'شوكولاتة' },
         ];
+        const cart = [];
+        const account = {};
 
-        let cart = [];
-        let total = 0;
+        const productsContainer = document.getElementById('products');
+        const cartItemsElement = document.getElementById('cartItems');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const accountForm = document.getElementById('accountForm');
 
-        // دالة لإنشاء عناصر المنتج
-        function createProductElements() {
-            const productsContainer = document.getElementById('products');
-            products.forEach(product => {
+        function renderProducts() {
+            products.forEach((product, index) => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'product';
                 productDiv.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="${product.image}" alt="${product.alt}">
                     <h2>${product.name}</h2>
-                    <p class="price">${product.price} روبل</p>
-                    <button onclick="buyProduct('${product.name}', ${product.price})">إضافة للسلة</button>
+                    <p class="price">${product.price} جنيه</p>
+                    <button onclick="addToCart(${index})">إضافة للسلة</button>
                 `;
                 productsContainer.appendChild(productDiv);
             });
         }
 
-        // ... (باقي الكود JavaScript يبقى كما هو) ...
+        function addToCart(index) {
+            cart.push(products[index]);
+            alert('تمت الإضافة للسلة!');
+        }
 
-        // استدعاء دالة إنشاء عناصر المنتج عند تحميل الصفحة
-        window.onload = function() {
-            createProductElements();
-            Telegram.WebApp.expand();
-        };
+        function renderCart() {
+            cartItemsElement.innerHTML = '';
+            cart.forEach((item, idx) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} - ${item.price} جنيه <button onclick="removeFromCart(${idx})">إزالة</button>`;
+                cartItemsElement.appendChild(li);
+            });
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.products, .cart-page, .account-page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('footer button').forEach(el => el.classList.remove('active'));
+
+            if (tab === 'home') {
+                document.getElementById('products').classList.add('active');
+                document.getElementById('homeTab').classList.add('active');
+            } else if (tab === 'cart') {
+                renderCart();
+                document.getElementById('cartPage').classList.add('active');
+                document.getElementById('cartTab').classList.add('active');
+            } else if (tab === 'account') {
+                document.getElementById('accountPage').classList.add('active');
+                document.getElementById('accountTab').classList.add('active');
+            }
+        }
+
+        accountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            account.name = document.getElementById('registerName').value;
+            account.address = document.getElementById('registerAddress').value;
+            account.phone = document.getElementById('registerPhone').value;
+            alert('تم حفظ بيانات الحساب!');
+        });
+
+        checkoutForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert('السلة فارغة!');
+                return;
+            }
+            const order = {
+                name: account.name || document.getElementById('customerName').value,
+                address: account.address || document.getElementById('customerAddress').value,
+                phone: account.phone || document.getElementById('customerPhone').value,
+                items: cart,
+            };
+            console.log('تم إرسال الطلب:', order);
+            alert('تم إرسال طلبك بنجاح!');
+            cart.length = 0;
+            renderCart();
+            switchTab('home');
+        });
+
+        renderProducts();
     </script>
 </body>
 </html>
