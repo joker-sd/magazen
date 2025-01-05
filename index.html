@@ -10,168 +10,130 @@
             font-family: 'Tajawal', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f3f4f6;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            box-sizing: border-box;
         }
 
         header {
-            background-color: #0088cc;
-            color: #fff;
-            padding: 15px 20px;
+            background-color: #007BFF;
+            color: white;
             text-align: center;
-            font-size: 20px;
+            padding: 1rem;
+            font-size: 1.5rem;
         }
 
         .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .products, .cart-page, .account-page {
+            padding: 1rem;
             display: none;
         }
 
-        .products.active, .cart-page.active, .account-page.active {
+        .main-content.active {
             display: block;
         }
 
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        .products .product {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
         }
 
-        .product {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .product img {
-            width: 100%;
-            max-width: 150px;
-            height: 150px;
+        .products .product img {
+            width: 50px;
+            height: 50px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 50%;
         }
 
-        .product h2 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .price {
-            font-weight: bold;
-            color: #0088cc;
-        }
-
-        button {
-            background-color: #0088cc;
+        .products .product button {
+            background-color: #28a745;
             color: white;
             border: none;
+            padding: 0.5rem 1rem;
             border-radius: 5px;
-            padding: 10px 20px;
-            margin-top: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #005f99;
+        .products .product button:hover {
+            background-color: #218838;
         }
 
         footer {
-            background-color: #fff;
-            border-top: 1px solid #ddd;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
             position: fixed;
             bottom: 0;
             width: 100%;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            background-color: #f8f9fa;
+            padding: 0.5rem 0;
+            border-top: 1px solid #ddd;
         }
 
         footer button {
-            flex: 1;
-            padding: 10px 0;
             background: none;
             border: none;
-            font-size: 16px;
-            font-weight: bold;
-            color: #555;
+            font-size: 1rem;
+            cursor: pointer;
         }
 
         footer button.active {
-            color: #0088cc;
+            color: #007BFF;
+            font-weight: bold;
         }
 
-        .cart-page ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart-page li {
-            background: #fff;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-page li button {
-            background-color: red;
-        }
-
-        #checkoutForm input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 10px;
+        form input {
+            display: block;
+            width: 100%;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+
+        form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <header>مرحباً بك في المتجر</header>
+    <header>مرحباً بك في المتجر الإلكتروني</header>
 
-    <div class="main-content">
-        <!-- Products Section -->
-        <div id="products" class="products active"></div>
+    <div id="productsPage" class="main-content active">
+        <h2>المنتجات</h2>
+        <div id="products" class="products"></div>
+    </div>
 
-        <!-- Cart Section -->
-        <div id="cartPage" class="cart-page">
-            <h2>سلة المشتريات</h2>
-            <ul id="cartItems"></ul>
-            <form id="checkoutForm">
-                <h3>إتمام الطلب</h3>
-                <input type="text" id="customerName" placeholder="اسم العميل" required>
-                <input type="text" id="customerAddress" placeholder="العنوان" required>
-                <input type="tel" id="customerPhone" placeholder="رقم الهاتف" required>
-                <button type="submit">إرسال الطلب</button>
-            </form>
-        </div>
+    <div id="cartPage" class="main-content">
+        <h2>سلة المشتريات</h2>
+        <ul id="cartItems"></ul>
+        <form id="checkoutForm">
+            <h3>إتمام الطلب</h3>
+            <input type="text" id="customerName" placeholder="اسم العميل" required>
+            <input type="text" id="customerAddress" placeholder="العنوان" required>
+            <input type="tel" id="customerPhone" placeholder="رقم الهاتف" required>
+            <button type="submit">إرسال الطلب</button>
+        </form>
+    </div>
 
-        <!-- Account Section -->
-        <div id="accountPage" class="account-page">
-            <h2>إنشاء حساب</h2>
-            <form id="accountForm">
-                <input type="text" id="registerName" placeholder="اسمك" required>
-                <input type="text" id="registerAddress" placeholder="عنوانك" required>
-                <input type="tel" id="registerPhone" placeholder="رقم هاتفك" required>
-                <button type="submit">حفظ البيانات</button>
-            </form>
-        </div>
+    <div id="accountPage" class="main-content">
+        <h2>إنشاء حساب</h2>
+        <form id="accountForm">
+            <input type="text" id="registerName" placeholder="اسمك" required>
+            <input type="text" id="registerAddress" placeholder="عنوانك" required>
+            <input type="tel" id="registerPhone" placeholder="رقم هاتفك" required>
+            <button type="submit">حفظ البيانات</button>
+        </form>
     </div>
 
     <footer>
@@ -189,19 +151,16 @@
         const cart = [];
         const account = {};
 
-        const productsContainer = document.getElementById('products');
-        const cartItemsElement = document.getElementById('cartItems');
-        const checkoutForm = document.getElementById('checkoutForm');
-        const accountForm = document.getElementById('accountForm');
-
         function renderProducts() {
+            const productsContainer = document.getElementById('products');
+            productsContainer.innerHTML = '';
             products.forEach((product, index) => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'product';
                 productDiv.innerHTML = `
                     <img src="${product.image}" alt="${product.alt}">
-                    <h2>${product.name}</h2>
-                    <p class="price">${product.price} جنيه</p>
+                    <h3>${product.name}</h3>
+                    <p>${product.price} جنيه</p>
                     <button onclick="addToCart(${index})">إضافة للسلة</button>
                 `;
                 productsContainer.appendChild(productDiv);
@@ -214,11 +173,12 @@
         }
 
         function renderCart() {
-            cartItemsElement.innerHTML = '';
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
             cart.forEach((item, idx) => {
                 const li = document.createElement('li');
                 li.innerHTML = `${item.name} - ${item.price} جنيه <button onclick="removeFromCart(${idx})">إزالة</button>`;
-                cartItemsElement.appendChild(li);
+                cartItems.appendChild(li);
             });
         }
 
@@ -228,11 +188,11 @@
         }
 
         function switchTab(tab) {
-            document.querySelectorAll('.products, .cart-page, .account-page').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('footer button').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.main-content').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('footer button').forEach(btn => btn.classList.remove('active'));
 
             if (tab === 'home') {
-                document.getElementById('products').classList.add('active');
+                document.getElementById('productsPage').classList.add('active');
                 document.getElementById('homeTab').classList.add('active');
             } else if (tab === 'cart') {
                 renderCart();
@@ -244,31 +204,35 @@
             }
         }
 
-        accountForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            account.name = document.getElementById('registerName').value;
-            account.address = document.getElementById('registerAddress').value;
-            account.phone = document.getElementById('registerPhone').value;
-            alert('تم حفظ بيانات الحساب!');
-        });
-
-        checkoutForm.addEventListener('submit', (e) => {
+        document.getElementById('checkoutForm').addEventListener('submit', (e) => {
             e.preventDefault();
             if (cart.length === 0) {
                 alert('السلة فارغة!');
                 return;
             }
             const order = {
-                name: account.name || document.getElementById('customerName').value,
-                address: account.address || document.getElementById('customerAddress').value,
-                phone: account.phone || document.getElementById('customerPhone').value,
+                name: document.getElementById('customerName').value,
+                address: document.getElementById('customerAddress').value,
+                phone: document.getElementById('customerPhone').value,
                 items: cart,
             };
-            console.log('تم إرسال الطلب:', order);
-            alert('تم إرسال طلبك بنجاح!');
-            cart.length = 0;
-            renderCart();
-            switchTab('home');
+            if (window.Telegram?.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify(order));
+                alert('تم إرسال طلبك بنجاح!');
+                cart.length = 0;
+                renderCart();
+                switchTab('home');
+            } else {
+                alert('تعذر إرسال الطلب. استخدم التطبيق من خلال Telegram.');
+            }
+        });
+
+        document.getElementById('accountForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            account.name = document.getElementById('registerName').value;
+            account.address = document.getElementById('registerAddress').value;
+            account.phone = document.getElementById('registerPhone').value;
+            alert('تم حفظ بيانات الحساب!');
         });
 
         renderProducts();
