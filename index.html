@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر Telegram</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .product { margin: 10px; }
+        button { padding: 10px 20px; background-color: #0088cc; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>مرحبا بك في المتجر</h1>
+    <div class="product">
+        <h2>حليب - 50 روبل</h2>
+        <button onclick="buyProduct('حليب')">شراء</button>
+    </div>
+    <div class="product">
+        <h2>عصير - 30 روبل</h2>
+        <button onclick="buyProduct('عصير')">شراء</button>
+    </div>
+    <div class="product">
+        <h2>شوكولاتة - 70 روبل</h2>
+        <button onclick="buyProduct('شوكولاتة')">شراء</button>
+    </div>
+
+    <script>
+        function buyProduct(product) {
+            alert(`تم شراء ${product}`);
+            Telegram.WebApp.close(); // يغلق واجهة الويب بعد التفاعل
+        }
+    </script>
+</body>
+</html>
