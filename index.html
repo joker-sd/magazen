@@ -1,35 +1,134 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متجر Telegram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .product { margin: 10px; }
-        button { padding: 10px 20px; background-color: #0088cc; color: white; border: none; cursor: pointer; }
+        body { 
+            font-family: 'Tajawal', Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+        }
+        h1 {
+            color: #0088cc;
+            margin-bottom: 30px;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+        .product { 
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+        }
+        .product img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .product h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .price {
+            font-weight: bold;
+            color: #0088cc;
+            margin-bottom: 10px;
+        }
+        button { 
+            padding: 10px 20px; 
+            background-color: #0088cc; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #006699;
+        }
+        #cart {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #0088cc;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
+    <div id="cart">0</div>
     <h1>مرحبا بك في المتجر</h1>
-    <div class="product">
-        <h2>حليب - 50 روبل</h2>
-        <button onclick="buyProduct('حليب')">شراء</button>
-    </div>
-    <div class="product">
-        <h2>عصير - 30 روبل</h2>
-        <button onclick="buyProduct('عصير')">شراء</button>
-    </div>
-    <div class="product">
-        <h2>شوكولاتة - 70 روبل</h2>
-        <button onclick="buyProduct('شوكولاتة')">شراء</button>
+    <div id="products" class="products">
+        <!-- سيتم إنشاء المنتجات هنا ديناميكيًا -->
     </div>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        function buyProduct(product) {
-            alert(`تم شراء ${product}`);
-            Telegram.WebApp.close(); // يغلق واجهة الويب بعد التفاعل
+        // مصفوفة المنتجات
+        const products = [
+            { name: 'حليب', price: 50, image: 'https://avatars.mds.yandex.net/i?id=8176fa44f0e16af14246289848884abb_l-9099806-images-thumbs&ref=rim&n=13&w=1026&h=1026' },
+            { name: 'عصير', price: 30, image: 'https://avatars.mds.yandex.net/i?id=88be488f7d174a58b051b0d04b839ebc_l-5166633-images-thumbs&ref=rim&n=13&w=462&h=760' },
+            { name: 'شوكولاتة', price: 70, image: 'https://avatars.mds.yandex.net/i?id=762724787879a415d8e210b8ffde1cde_l-5222573-images-thumbs&ref=rim&n=13&w=1140&h=1140' },
+            { name: 'خبز', price: 20, image: 'https://avatars.mds.yandex.net/i?id=21972448c62907923ee1c322e7ae5026_l-6332308-images-thumbs&n=13' },
+            { name: 'جبن', price: 60, image: 'https://avatars.mds.yandex.net/i?id=572bd2c808960446df9719ba70ddabb7_l-10869960-images-thumbs&n=13' }
+        ];
+
+        let cart = [];
+        let total = 0;
+
+        // دالة لإنشاء عناصر المنتج
+        function createProductElements() {
+            const productsContainer = document.getElementById('products');
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p class="price">${product.price} روبل</p>
+                    <button onclick="buyProduct('${product.name}', ${product.price})">إضافة للسلة</button>
+                `;
+                productsContainer.appendChild(productDiv);
+            });
         }
+
+        // ... (باقي الكود JavaScript يبقى كما هو) ...
+
+        // استدعاء دالة إنشاء عناصر المنتج عند تحميل الصفحة
+        window.onload = function() {
+            createProductElements();
+            Telegram.WebApp.expand();
+        };
     </script>
 </body>
 </html>
